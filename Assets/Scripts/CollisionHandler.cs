@@ -13,20 +13,25 @@ public class CollisionHandler : MonoBehaviour
 
     int currentSceneIndex = 0;
     bool isTransitioning = false;
+    bool collisionDisabled = false;
     
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
+    void Update()
+    {
+        ProcessDebugKeys();
+    }
+
     void OnCollisionEnter(Collision other)
     {
-        if(isTransitioning){ return; }
+        if(isTransitioning || collisionDisabled){ return; }
 
         switch (other.gameObject.tag) 
         {
             case "Friendly":
-                Debug.Log("Hit Friendly");
                 break;
             case "Finish":
                 StartSuccessSequence();
@@ -34,6 +39,19 @@ public class CollisionHandler : MonoBehaviour
             default:
                 StartCrashSequence();
                 break;
+        }
+    }
+
+    void ProcessDebugKeys()
+    {
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            LoadNextLevel();
+        }
+        else if(Input.GetKeyDown(KeyCode.C))
+        {
+            collisionDisabled = !collisionDisabled;
+            Debug.Log("Toggled collision");
         }
     }
 
@@ -68,7 +86,7 @@ public class CollisionHandler : MonoBehaviour
         SceneManager.LoadScene(currentSceneIndex);
     }
 
-    void LoadNextLevel()
+    public void LoadNextLevel()
     {
         currentSceneIndex = GetCurrentSceneIndex();
         int nextSceneIndex = currentSceneIndex  + 1;

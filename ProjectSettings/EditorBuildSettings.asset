@@ -6,9 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Over.unity
+    path: Assets/Scenes/Template.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/Under.unity
-    guid: 00c11efabeee82a468ec8f93f927d17a
+    path: Assets/Scenes/FollowCamera 1.unity
+    guid: 80056a62dec4fb74f847ca2b5993cf80
+  - enabled: 1
+    path: Assets/Scenes/FollowCameraHarder.unity
+    guid: e3701def6a81dfa4abd48fb3168eb1ae
   m_configObjects: {}
