@@ -4,16 +4,19 @@ using UnityEngine.SceneManagement;
 public class CollisionHandler : MonoBehaviour
 {
     [SerializeField]float levelLoadDelay = 1f;
+    [SerializeField]float shieldDuration = 2f;
     [SerializeField] AudioClip crash;
     [SerializeField] AudioClip success;
     [SerializeField] ParticleSystem crashParticles;
     [SerializeField] ParticleSystem successParticles;
+    [SerializeField] GameObject shield;
 
     AudioSource audioSource;
 
     int currentSceneIndex = 0;
     bool isTransitioning = false;
     bool collisionDisabled = false;
+    bool isShieldActive = false;
     
     void Start()
     {
@@ -23,11 +26,12 @@ public class CollisionHandler : MonoBehaviour
     void Update()
     {
         ProcessDebugKeys();
+        ProcessShield();
     }
 
     void OnCollisionEnter(Collision other)
     {
-        if(isTransitioning || collisionDisabled){ return; }
+        if(isTransitioning || collisionDisabled || isShieldActive){ return; }
 
         switch (other.gameObject.tag) 
         {
@@ -53,6 +57,21 @@ public class CollisionHandler : MonoBehaviour
             collisionDisabled = !collisionDisabled;
             Debug.Log("Toggled collision");
         }
+    }
+
+    void ProcessShield()
+    {
+        if(Input.GetKeyDown(KeyCode.F) && !isShieldActive)
+        {
+            ToggleShield();
+            Invoke("ToggleShield", shieldDuration);
+        }
+    }
+
+    void ToggleShield()
+    {
+        isShieldActive = !isShieldActive;
+        shield.GetComponent<MeshRenderer>().enabled = isShieldActive;
     }
 
     void StartSuccessSequence()
